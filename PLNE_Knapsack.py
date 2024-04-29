@@ -106,8 +106,4 @@ class KnapsackUI(QWidget):
         self.output_text.setPlainText(output)
 
 
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    knapsack_ui = KnapsackUI()
-    knapsack_ui.show()
-    sys.exit(app.exec_())
+

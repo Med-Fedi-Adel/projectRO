@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtWidgets
 from pl1 import PL1_Ui
+from PLNE_Knapsack import KnapsackUI
 
 
 
@@ -14,6 +15,10 @@ class Ui_MainWindow(object):
         self.pushButton.setGeometry(QtCore.QRect(100, 430, 150, 50))
         self.pushButton.setStyleSheet("font-family: Arial; font-size: 15px; font-weight: bold;")
         self.pushButton.setObjectName("pushButton")
+        self.pushButton2 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton2.setGeometry(QtCore.QRect(400, 430, 150, 50))
+        self.pushButton2.setStyleSheet("font-family: Arial; font-size: 15px; font-weight: bold;")
+        self.pushButton2.setObjectName("pushButton")
        
         
        
@@ -70,6 +75,8 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         self.pushButton.clicked.connect(self.open_exercice_1)
+        self.pushButton2.clicked.connect(self.open_PLNE)
+        
     
 
 
@@ -77,6 +84,7 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.pushButton.setText(_translate("MainWindow", "Exercice PL"))
+        self.pushButton2.setText(_translate("MainWindow", "Exercice PLNE"))
        
         self.label.setText(_translate("MainWindow", "Projet : Recherche Opérationnelle"))
         self.label_2.setText(_translate("MainWindow", "Elaboré par :"))
@@ -89,12 +97,11 @@ class Ui_MainWindow(object):
         self.exercice_1_window = PL1_Ui()
         self.exercice_1_window.setupUi(self.exercice_1_window)
         self.exercice_1_window.show()
-        
-"""    def open_exercice_6(self):
-        self.exercice_6_window = PL6_Ui()
-        self.exercice_6_window.setupUi(self.exercice_6_window)
-        self.exercice_6_window.show()
-"""
+    
+    def open_PLNE(self):
+        self.PLNE_Knapsack_window = KnapsackUI()
+       
+        self.PLNE_Knapsack_window.show()
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
