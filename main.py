@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtWidgets
 from pl1 import PL1_Ui
+from pl3 import PL3_Ui
 from PLNE_Knapsack import KnapsackUI
 
 
@@ -16,9 +17,13 @@ class Ui_MainWindow(object):
         self.pushButton.setStyleSheet("font-family: Arial; font-size: 15px; font-weight: bold;")
         self.pushButton.setObjectName("pushButton")
         self.pushButton2 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton2.setGeometry(QtCore.QRect(400, 430, 150, 50))
+        self.pushButton2.setGeometry(QtCore.QRect(300, 430, 150, 50))
         self.pushButton2.setStyleSheet("font-family: Arial; font-size: 15px; font-weight: bold;")
         self.pushButton2.setObjectName("pushButton")
+        self.pushButton3 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton3.setGeometry(QtCore.QRect(500, 430, 150, 50))
+        self.pushButton3.setStyleSheet("font-family: Arial; font-size: 15px; font-weight: bold;")
+        self.pushButton3.setObjectName("pushButton")
        
         
        
@@ -63,6 +68,10 @@ class Ui_MainWindow(object):
         self.label_6.setStyleSheet("font-family: Arial; font-size: 25px; font-weight: bold; color: #000;")
         self.label_6.setGeometry(QtCore.QRect(520, 230, 230, 50))
         self.label_6.setObjectName("label_6")
+        self.label_7 = QtWidgets.QLabel(self.centralwidget)
+        self.label_7.setStyleSheet("font-family: Arial; font-size: 25px; font-weight: bold; color: #000;")
+        self.label_7.setGeometry(QtCore.QRect(120, 290, 230, 50))
+        self.label_7.setObjectName("label_7")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 30))
@@ -76,6 +85,7 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         self.pushButton.clicked.connect(self.open_exercice_1)
         self.pushButton2.clicked.connect(self.open_PLNE)
+        self.pushButton3.clicked.connect(self.open_exercice_3)
         
     
 
@@ -83,15 +93,19 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.pushButton.setText(_translate("MainWindow", "Exercice PL"))
+        self.pushButton.setText(_translate("MainWindow", "Exercice PL 1"))
         self.pushButton2.setText(_translate("MainWindow", "Exercice PLNE"))
+        self.pushButton3.setText(_translate("MainWindow", "Exercice PL 2"))
+        
        
         self.label.setText(_translate("MainWindow", "Projet : Recherche Opérationnelle"))
         self.label_2.setText(_translate("MainWindow", "Elaboré par :"))
         self.label_3.setText(_translate("MainWindow", "Masmoudi Mohamed"))
         self.label_4.setText(_translate("MainWindow", "Gharbi Chaima"))
         self.label_5.setText(_translate("MainWindow", "Adel Mohamed Fedi"))
-        self.label_6.setText(_translate("MainWindow", "???????????????"))
+        self.label_6.setText(_translate("MainWindow", "Ghribi Abdelhak"))
+        self.label_7.setText(_translate("MainWindow", "Masmoudi Aziz"))
+        
       
     def open_exercice_1(self):
         self.exercice_1_window = PL1_Ui()
@@ -102,6 +116,11 @@ class Ui_MainWindow(object):
         self.PLNE_Knapsack_window = KnapsackUI()
        
         self.PLNE_Knapsack_window.show()
+    
+    def open_exercice_3(self):
+        self.exercice_3_window = PL3_Ui()
+        self.exercice_3_window.setupUi(self.exercice_3_window)
+        self.exercice_3_window.show()
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
