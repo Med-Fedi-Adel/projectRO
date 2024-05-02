@@ -38,9 +38,10 @@ class PL3_Ui(QtWidgets.QMainWindow):  # Change QWidget to QMainWindow
         self.image_label = QtWidgets.QLabel(self.centralwidget)
         self.image_label.setGeometry(QtCore.QRect(200, 10, 900, 350))
         self.image_label.setObjectName("image_label")
-        image_path = "pl3.png"  # Replace with the actual path to your image file
-        pixmap = QPixmap(image_path)
-        self.image_label.setPixmap(pixmap)
+        #image_path = "pl3.png"  # Replace with the actual path to your image file
+       # pixmap = QPixmap(image_path)
+       # self.image_label.setPixmap(pixmap)
+        self.image_label.setStyleSheet("color: black; font-size: 16px; font-weight: semi-bold;")
         self.image_label.setScaledContents(True)
         self.resoudre1 = QtWidgets.QPushButton(self.centralwidget)
         self.resoudre1.setGeometry(QtCore.QRect(800, 500, 150, 50))
@@ -119,7 +120,7 @@ class PL3_Ui(QtWidgets.QMainWindow):  # Change QWidget to QMainWindow
         self.retranslateUi(PL3_Ui)
         QtCore.QMetaObject.connectSlotsByName(PL3_Ui)
     def set_default_values(self):
-        default_values = [17,13,15,19,14,16,11]  
+        default_values = [170,130,150,190,140,160,110]  
         for i, line_edit in enumerate([self.x_lundi_req,self.x_mardi_req,self.x_mercredi_req,self.x_jeudi_req,self.x_vendredi_req,self.x_samedi_req,self.x_dimanche_req]):
             line_edit.setText(str(default_values[i]))
     def show_results_dialog(self):
@@ -204,6 +205,8 @@ class PL3_Ui(QtWidgets.QMainWindow):  # Change QWidget to QMainWindow
         self.label_6.setText(_translate("MainWindow", "vendredi"))
         self.label_7.setText(_translate("MainWindow", "samedi"))
         self.label_8.setText(_translate("MainWindow", "dimache"))
+        self.image_label.setText(_translate("MainWindow", "Après l'incident du tsunami qui a frappé le Japon, le gouvernement s'est précipité pour mettre en place \nune urgence de reconstruction des biens endommagés.\n Pour cela, il a mis en place un programme de 7 semaines où un nombre minimum de travailleurs devraient venir\n chaque jour (valeurs par défaut : 170, 130, 150, 190, 140, 160, 110). Le temps passe et ils étaient bloqués sur la manière de \nplanifier les travailleurs pour satisfaire les besoins des villes. \nLes travailleurs doivent travailler 5 jours d'affilée en raison de l'ampleur des dommages causés par le tsunami."))
+
     def init_interface_(self):
         self.x_lundi_req.setText(str(self.x_lundi_req))
         self.x_mardi_req.setText(str(self.x_mardi_req))
