@@ -1,6 +1,7 @@
 from PyQt5 import QtCore, QtWidgets
 from pl1 import PL1_Ui
 from pl3 import PL3_Ui
+from Factory_facility import FacilityFactoryApp
 from PLNE_Knapsack import KnapsackUI
 
 
@@ -93,7 +94,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.pushButton.setText(_translate("MainWindow", "Exercice PL 1"))
+        self.pushButton.setText(_translate("MainWindow", "Probleme PLM 1"))
         self.pushButton2.setText(_translate("MainWindow", "Exercice PLNE"))
         self.pushButton3.setText(_translate("MainWindow", "Exercice PL 2"))
         
@@ -108,8 +109,8 @@ class Ui_MainWindow(object):
         
       
     def open_exercice_1(self):
-        self.exercice_1_window = PL1_Ui()
-        self.exercice_1_window.setupUi(self.exercice_1_window)
+        self.exercice_1_window = FacilityFactoryApp()
+        #self.exercice_1_window.initUI(self.exercice_1_window)
         self.exercice_1_window.show()
     
     def open_PLNE(self):
