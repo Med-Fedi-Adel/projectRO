@@ -1,6 +1,6 @@
 from PyQt5 import QtCore, QtWidgets
 from pl1 import PL1_Ui
-from pl3 import PL3_Ui
+from pl3 import MiningOptimizer
 from Factory_facility import FacilityFactoryApp
 from PLNE_Knapsack import KnapsackUI
 
@@ -119,8 +119,8 @@ class Ui_MainWindow(object):
         self.PLNE_Knapsack_window.show()
     
     def open_exercice_3(self):
-        self.exercice_3_window = PL3_Ui()
-        self.exercice_3_window.setupUi(self.exercice_3_window)
+        self.exercice_3_window = MiningOptimizer()
+        
         self.exercice_3_window.show()
 if __name__ == "__main__":
     import sys
