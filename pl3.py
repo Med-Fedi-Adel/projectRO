@@ -77,7 +77,7 @@
 
 # mining.write("mining-output.sol")
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QHBoxLayout
+from PyQt5.QtWidgets import QScrollArea, QApplication, QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QHBoxLayout , QTableView, QTableWidget, QTableWidgetItem, QHeaderView
 import numpy as np
 import pandas as pd
 
@@ -94,20 +94,43 @@ class MiningOptimizer(QWidget):
         self.setWindowTitle('Mining Optimization GUI')
         self.setGeometry(100, 100, 400, 300)
 
-        self.input_layout = QVBoxLayout()
+        # Create a scroll area
+        scroll_area = QScrollArea()
+        scroll_area.setWidgetResizable(True)
+
+        # Create a widget to hold the layout
+        scroll_content = QWidget()
+        scroll_area.setWidget(scroll_content)
+
+        # Create a layout for the content widget
+        self.input_layout = QVBoxLayout(scroll_content)
+
+        # Add input fields and buttons
         self.add_input_fields()
         self.add_buttons()
 
-        self.setLayout(self.input_layout)
+        # Set the main layout of the window
+        main_layout = QVBoxLayout(self)
+        main_layout.addWidget(scroll_area)
 
     def add_input_fields(self):
+        self.years_label = QLabel('Number of years:')
+        self.input_layout.addWidget(self.years_label)
         self.years_input = QLineEdit()
         self.years_input.setPlaceholderText('Number of years')
         self.input_layout.addWidget(self.years_input)
 
+        self.mines_label = QLabel('Number of mines:')
+        self.input_layout.addWidget(self.mines_label)
         self.mines_input = QLineEdit()
         self.mines_input.setPlaceholderText('Number of mines')
         self.input_layout.addWidget(self.mines_input)
+
+        self.discount_label = QLabel('Discount Rate:')
+        self.input_layout.addWidget(self.discount_label)
+        self.discount_input = QLineEdit()
+        self.discount_input.setPlaceholderText('Discount Rate in %')
+        self.input_layout.addWidget(self.discount_input)        
 
         self.royalty_capacity_quality_btn = QPushButton('Add Royalty, Capacity, Quality')
         self.royalty_capacity_quality_btn.clicked.connect(self.add_royalty_capacity_quality_input)
@@ -170,6 +193,7 @@ class MiningOptimizer(QWidget):
         # Get user inputs
         num_years = int(self.years_input.text())
         num_mines = int(self.mines_input.text())
+        discount = float(self.discount_input.text())   
         max_mines = int(self.max_mines_input.text())
         price = float(self.price_input.text())
 
@@ -207,7 +231,7 @@ class MiningOptimizer(QWidget):
         qualities_dict = {mine: qualities[i] for i, mine in enumerate(mines)}
         targets_dict = {year: targets[i] for i, year in enumerate(years)}
 
-        time_discount = {year: (1/(1+1/10.0)) ** (year-1) for year in years}
+        time_discount = {year: (1/(1+1/discount)) ** (year-1) for year in years}
 
         mining = gp.Model('Mining')
 
@@ -241,11 +265,76 @@ class MiningOptimizer(QWidget):
             # Display objective value
             objective_label = QLabel(f'Objective Value: {objective_value_dollars}')
             self.input_layout.addWidget(objective_label)
+        
+        # rows = years.copy()
+        # columns = mines.copy()
+        # extraction = pd.DataFrame(columns=columns, index=rows, data=0.0)
+
+        # for year, mine in extract.keys():
+        #     if (abs(extract[year, mine].x) > 1e-6):
+        #         extraction.loc[year, mine] = np.round(extract[year, mine].x / 1e6, 2)
+        # extraction
+
+         # Display extraction table
+        extraction_label = QLabel('Extraction Table')
+        self.input_layout.addWidget(extraction_label)
+        extraction = pd.DataFrame(columns=mines, index=years, data=0.0)
+        for year, mine in extract.keys():
+            if abs(extract[year, mine].x) > 1e-6:
+                extraction.loc[year, mine] = np.round(extract[year, mine].x / 1e6, 2)
+
+        extraction_table = QTableWidget()
+        extraction_table.setRowCount(len(years))
+        extraction_table.setColumnCount(len(mines))
+
+        for i, year in enumerate(years):
+            for j, mine in enumerate(mines):
+                item = QTableWidgetItem(str(extraction.loc[year, mine]))
+                extraction_table.setItem(i, j, item)
+
+        extraction_table.setHorizontalHeaderLabels([str(column) for column in extraction.columns])
+        extraction_table.setVerticalHeaderLabels([str(row) for row in extraction.index])
+
+        extraction_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+
+        self.input_layout.addWidget(extraction_table)
+
+        # rows = years.copy()
+        # sales = pd.DataFrame(columns=['Sales'], index=rows, data=0.0)
+
+        # for year in blend.keys():
+        #     if (abs(blend[year].x) > 1e-6):
+        #         sales.loc[year, 'Sales'] = np.round(blend[year].x / 1e6, 2)
+        # sales
+
+
+        sales_label = QLabel('Sales Table')
+        self.input_layout.addWidget(sales_label)
+        # Display sales table
+        sales = pd.DataFrame(columns=['Sales'], index=years, data=0.0)
+        for year in blend.keys():
+            if abs(blend[year].x) > 1e-6:
+                sales.loc[year, 'Sales'] = np.round(blend[year].x / 1e6, 2)
+
+        sales_table = QTableWidget()
+        sales_table.setRowCount(len(years))
+        sales_table.setColumnCount(1)
+
+        for i, year in enumerate(years):
+            item = QTableWidgetItem(str(sales.loc[year, 'Sales']))
+            sales_table.setItem(i, 0, item)
+
+        sales_table.setHorizontalHeaderLabels(['Sales'])
+        sales_table.setVerticalHeaderLabels([str(row) for row in sales.index])
+
+        sales_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+
+        self.input_layout.addWidget(sales_table)
 
             
 
-# if __name__ == '__main__':
-#     app = QApplication(sys.argv)
-#     window = MiningOptimizer()
-#     window.show()
-#     sys.exit(app.exec_())
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    window = MiningOptimizer()
+    window.show()
+    sys.exit(app.exec_())
