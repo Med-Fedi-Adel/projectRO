@@ -8,6 +8,8 @@ class KnapsackSolver:
         self.model = gp.Model('Knapsack')
         self.items = []
         self.capacity = 0
+        self.nameVar = ""
+        self.weightVar = ""
         self.n = 0
         self.x = None
 
@@ -18,6 +20,7 @@ class KnapsackSolver:
         self.n = len(self.items)
         self.x = self.model.addVars(self.n, vtype=gp.GRB.BINARY, name='x')
         self.model.setObjective(sum(item[2] * self.x[i] for i, item in enumerate(self.items)), gp.GRB.MAXIMIZE)
+        
         self.model.addConstr(sum(item[1] * self.x[i] for i, item in enumerate(self.items)) <= self.capacity, 'capacity_constraint')
         self.model.optimize()
 
@@ -38,15 +41,19 @@ class KnapsackUI(QWidget):
         layout = QVBoxLayout()
         
         
-        desc1 = QLabel("Tu es un voleur qui a un sac à dos de capacité limitée et qui veut voler des objets de valeur. ")
-        desc2 = QLabel("Chaque objet a un poids et une valeur.")
-        desc3 = QLabel("Le but est de maximiser la valeur totale des objets volés sans dépasser la capacité du sac à dos.")
+        desc1 = QLabel("")
+        
         layout.addWidget(desc1)
-        layout.addWidget(desc2)
-        layout.addWidget(desc3)
         
         
-
+        
+        self.name1 = QLineEdit()
+        layout.addWidget(QLabel("propriété 1:"))
+        layout.addWidget(self.name1)
+        self.name2= QLineEdit()
+        layout.addWidget(QLabel("propriété 2:"))
+        layout.addWidget(self.name2)
+        
         # Add item button
         self.add_item_button = QPushButton("Ajouter un objet")
         self.add_item_button.clicked.connect(self.add_item)
@@ -82,9 +89,9 @@ class KnapsackUI(QWidget):
 
         item_layout.addWidget(QLabel("Nom:"))
         item_layout.addWidget(name_input)
-        item_layout.addWidget(QLabel("Poids:"))
+        item_layout.addWidget(QLabel(self.name1.text()))
         item_layout.addWidget(weight_input)
-        item_layout.addWidget(QLabel("Valeur:"))
+        item_layout.addWidget(QLabel(self.name2.text()))
         item_layout.addWidget(value_input)
 
         self.item_inputs_layout.addLayout(item_layout)
@@ -97,12 +104,12 @@ class KnapsackUI(QWidget):
             weight_input = item_layout.itemAt(3).widget()
             value_input = item_layout.itemAt(5).widget()
             solver.add_item(name_input.text(), int(weight_input.text()), int(value_input.text()))
-
+        
         solver.capacity = int(self.capacity_input.text())
         solver.solve()
         selected_items, total_value, total_weight = solver.get_solution()
 
-        output = f"Objets Selectionnés: {selected_items}\nValeur Totale: {total_value}\nPoids Totale: {total_weight}"
+        output = f"Objets Selectionnés: {selected_items}\n{self.name2.text()} Totale: {total_value}\{self.name1.text()} Totale: {total_weight}"
         self.output_text.setPlainText(output)
 
 
